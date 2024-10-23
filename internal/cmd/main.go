@@ -20,7 +20,6 @@ func main() {
 		slog.Int("port", conf.GRPC.Port),
 	)
 
-	// TODO: ПОКА В ПРОЦЕССЕ
 	application := thumbapp.New(log, conf.GRPC.Port, conf.StoragePath)
 
 	go application.GRPCSrv.MustRun()

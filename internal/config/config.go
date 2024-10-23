@@ -14,6 +14,11 @@ type Config struct {
 	GRPC        GRPCConfig `yaml:"grpc"`
 }
 
+type ApiData struct {
+	APIKey string `yaml:"api_key" env-required:"true"`
+	APIURL string `yaml:"api_url" env-required:"true"`
+}
+
 type GRPCConfig struct {
 	Port    int           `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
@@ -26,6 +31,20 @@ func MustLoad() *Config {
 	}
 
 	return MustLoadPath(configPath)
+}
+
+func ApiKeyAndUrl(apiPath string) *ApiData {
+	if _, err := os.Stat(apiPath); os.IsNotExist(err) {
+		panic("config file does not exist: " + apiPath)
+	}
+
+	var cfg ApiData
+
+	if err := cleanenv.ReadConfig(apiPath, &cfg); err != nil {
+		panic("cannot read config: " + err.Error())
+	}
+
+	return &cfg
 }
 
 func MustLoadPath(configPath string) *Config {

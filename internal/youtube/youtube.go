@@ -3,14 +3,14 @@ package youtube
 import (
 	"encoding/json"
 	"fmt"
+	"getthumbnails/internal/config"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
 )
 
-const apiKey = "AIzaSyC-TBFl1FoLMnEhXo3cO2bcc27h8AlvBgU"
-const apiURL = "https://www.googleapis.com/youtube/v3/videos"
+const pathToApiData = "./config/api.yaml"
 
 type Thumbnail struct {
 	URL    string `json:"url"`
@@ -55,7 +55,7 @@ func getVideoID(videoURL string) (string, error) {
 	return query.Get("v"), nil
 }
 
-func getThumbnailURL(videoID string) (string, error) {
+func getThumbnailURL(videoID string, apiURL string, apiKey string) (string, error) {
 	const op = "youtube.getThumbnailURL"
 	url := fmt.Sprintf("%s?key=%s&part=snippet&id=%s", apiURL, apiKey, videoID)
 	fmt.Println(url)
@@ -110,11 +110,12 @@ func downloadThumbnail(thumbnailURL, filename string) error {
 }
 
 func GetThumbnail(videoUrl string) (string, error) {
+	apiData := config.ApiKeyAndUrl(pathToApiData)
 	videoID, err := getVideoID(videoUrl)
 	if err != nil {
 		return "", err
 	}
-	thumbnailURL, err := getThumbnailURL(videoID)
+	thumbnailURL, err := getThumbnailURL(videoID, apiData.APIURL, apiData.APIKey)
 	if err != nil {
 		return "", err
 	}
