@@ -1,4 +1,4 @@
 vendor/
 thumbnails/
-/storage/thumbnails.db
-/config/api.yaml
+storage/thumbnails.db
+config/api.yaml
