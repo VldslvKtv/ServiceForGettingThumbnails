@@ -2,7 +2,6 @@ package grpc
 
 import (
 	"context"
-	"fmt"
 	thumbnail1 "getthumbnails/gen"
 
 	"google.golang.org/grpc"
@@ -32,7 +31,6 @@ func (s *serverAPI) GetThumbnail(ctx context.Context,
 	}
 	id, err := s.load.LoadThumbnail(ctx, req.GetUrl())
 	if err != nil {
-		fmt.Println(err)
 		return nil, status.Error(codes.InvalidArgument, "Failed load thumbnail")
 	}
 

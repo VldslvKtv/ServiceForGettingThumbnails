@@ -51,33 +51,33 @@ func (l *Load) LoadThumbnail(ctx context.Context,
 	_, err := l.cache.GetCache(ctx, url)
 	if err != nil {
 		if errors.Is(err, storage_err.ErrNotFoundCache) {
-			_, err := l.cache.NewThumbnail(ctx, url)
+
+			thumbnailUrl, err := youtube.GetThumbnail(url)
 			if err != nil {
-				fmt.Println(err)
-				return "", fmt.Errorf("%s: %w", op, ErrCache)
+				slog.Warn("failed to get thumbnail", slog.String("url", url), slog.Any("error", err))
+				return "", fmt.Errorf("%s: %w", op, ErrLoadVideo)
 			}
 
-			thunmbnailUrl, err := youtube.GetThumbnail(url)
+			_, err = l.cache.NewThumbnail(ctx, url)
 			if err != nil {
-				fmt.Println(err)
-				return "", fmt.Errorf("%s: %w", op, ErrLoadVideo)
+				slog.Warn("failed to get thumbnail", slog.String("url", url), slog.Any("error", err))
+				return "", fmt.Errorf("%s: %w", op, ErrCache)
 			}
 			log.Info("thumbnail loaded")
 
-			return thunmbnailUrl, nil
+			return thumbnailUrl, nil
 		}
 
 		return "", fmt.Errorf("%s: %w", op, err)
 	}
 
-	thunmbnailUrl, err := youtube.GetThumbnail(url)
+	thumbnailUrl, err := youtube.GetThumbnail(url)
 	if err != nil {
-		fmt.Println(err)
+		slog.Warn("failed to get thumbnail", slog.String("url", url), slog.Any("error", err))
 		return "", fmt.Errorf("%s: %w", op, ErrLoadVideo)
 	}
-
 	log.Info("thumbnail loaded into cache")
 
-	return thunmbnailUrl, nil
+	return thumbnailUrl, nil
 
 }
