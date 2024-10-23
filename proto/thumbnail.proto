@@ -1,0 +1,17 @@
+syntax="proto3";
+
+package thumbnail;
+
+option go_package = "kit.thumbnail.v1;thumbnail1";
+
+service Thumbnail {
+    rpc GetThumbnail(ThumbnailRequest) returns (ThumbnailResponse);
+}
+
+message ThumbnailRequest {
+    string url = 1;
+}
+
+message ThumbnailResponse {
+    string thumbnail = 1;
+}

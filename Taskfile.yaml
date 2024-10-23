@@ -1,0 +1,21 @@
+version: 3
+
+tasks:
+  generate:
+    aliases:
+      - gen
+    desc: "Generate code from proto files"
+    cmds:
+      - protoc -I proto proto/thumbnail.proto --go_out=./gen/ --go_opt=paths=source_relative --go_grpc_out=./gen/ --go_grpc_opt=paths=source_relative
+  run:
+    aliases:
+      - run
+    desc: "Run gPRC-server"
+    cmds:
+      - go run internal/cmd/main.go --config="./config/local.yaml"
+  migrate:
+    aliases:
+      - migrate
+    desc: "migrations"
+    cmds:
+      - go run ./internal/migrator --storage-path=./storage/thumbnails.db --migrations-path=./migrations

@@ -1,0 +1,5 @@
+env: "local" # dev, prod
+storage_path: "./storage/thumbnails.db"
+grpc:
+  port: 5001
+  timeout: 1h
