@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Env         string     `yaml:"env" env-default:"local"` // struct-tags
+	Env         string     `yaml:"env" env-default:"local"`
 	StoragePath string     `yaml:"storage_path" env-required:"true"`
 	GRPC        GRPCConfig `yaml:"grpc"`
 }
@@ -48,7 +48,6 @@ func ApiKeyAndUrl(apiPath string) *ApiData {
 }
 
 func MustLoadPath(configPath string) *Config {
-	// check if file exists
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		panic("config file does not exist: " + configPath)
 	}

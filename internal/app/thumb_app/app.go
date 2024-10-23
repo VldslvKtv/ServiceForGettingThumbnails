@@ -22,10 +22,6 @@ func New(
 	}
 
 	thumbnailService := loader.New(log, storage)
-	//authService := auth.New(log, storage, storage, storage, tokenTTL)
-	// TODO: инициализировать хранилище
-
-	// TODO: init suth service (auth)
 
 	grpcApp := app.New(log, thumbnailService, grpcPort)
 
